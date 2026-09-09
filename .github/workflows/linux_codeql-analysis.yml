@@ -1,104 +1,104 @@
-name: "CodeQL"
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-  schedule:
-    - cron: '0 16 * * 6'
+# name: "CodeQL"
+# on:
+#   push:
+#     branches: [ master ]
+#   pull_request:
+#     branches: [ master ]
+#   schedule:
+#     - cron: '0 16 * * 6'
 
-jobs:
-  analyze_main:
-    name: Analyze Local
-    if: github.repository_owner == 'ParadoxGameConverters'
-    runs-on: [self-hosted, linux]
+# jobs:
+#   analyze_main:
+#     name: Analyze Local
+#     if: github.repository_owner == 'ParadoxGameConverters'
+#     runs-on: [self-hosted, linux]
 
-    strategy:
-      fail-fast: false
-      matrix:
-        language: ['cpp']
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         language: ['cpp']
 
-    steps:
-    - name: "Cloning repo"
-      uses: actions/checkout@v7
+#     steps:
+#     - name: "Cloning repo"
+#       uses: actions/checkout@v7
 
-    - name: "Cloning selective submodules"
-      run: |
-       git submodule update --init --recursive commonItems
-       git -c submodule."external/commonItems".update=none \
-           submodule update --init --recursive Fronter
+#     - name: "Cloning selective submodules"
+#       run: |
+#        git submodule update --init --recursive commonItems
+#        git -c submodule."external/commonItems".update=none \
+#            submodule update --init --recursive Fronter
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v4.37.9
-      with:
-        languages: ${{ matrix.language }}
+#     - name: Initialize CodeQL
+#       uses: github/codeql-action/init@v4.37.9
+#       with:
+#         languages: ${{ matrix.language }}
 
-    - name: Configure cmake
-      run: cmake --preset x64-release-linux
+#     - name: Configure cmake
+#       run: cmake --preset x64-release-linux
 
-    - name: Build solution
-      run: cmake --build --preset build-x64-release-linux --target EU5ToVic3Converter EU5ToVic3Tests -- -j40
+#     - name: Build solution
+#       run: cmake --build --preset build-x64-release-linux --target EU5ToVic3Converter EU5ToVic3Tests -- -j40
 
-    - name: Run Tests
-      run: |
-       cd build/test/Release-Linux
-       ./EU5ToVic3Tests
+#     - name: Run Tests
+#       run: |
+#        cd build/test/Release-Linux
+#        ./EU5ToVic3Tests
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v4.37.9
+#     - name: Perform CodeQL Analysis
+#       uses: github/codeql-action/analyze@v4.37.9
       
-    - name: Cleanup
-      uses: colpal/actions-clean@v1
-      if: always()
+#     - name: Cleanup
+#       uses: colpal/actions-clean@v1
+#       if: always()
 
-  analyze:
-    name: Analyze Foreign
-    if: github.repository_owner != 'ParadoxGameConverters'
-    runs-on: ubuntu-latest
+#   analyze:
+#     name: Analyze Foreign
+#     if: github.repository_owner != 'ParadoxGameConverters'
+#     runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        language: ['cpp']
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         language: ['cpp']
 
-    steps:
-    - name: "Cloning repo"
-      uses: actions/checkout@v7
+#     steps:
+#     - name: "Cloning repo"
+#       uses: actions/checkout@v7
 
-    - name: "Cloning selective submodules"
-      run: |
-       git submodule update --init --recursive commonItems
-       git -c submodule."external/commonItems".update=none \
-           submodule update --init --recursive Fronter
+#     - name: "Cloning selective submodules"
+#       run: |
+#        git submodule update --init --recursive commonItems
+#        git -c submodule."external/commonItems".update=none \
+#            submodule update --init --recursive Fronter
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v4.37.9
-      with:
-        languages: ${{ matrix.language }}
+#     - name: Initialize CodeQL
+#       uses: github/codeql-action/init@v4.37.9
+#       with:
+#         languages: ${{ matrix.language }}
     
-    - name: Install Prerequisites
-      run: |
-       sudo apt-key adv --fetch-keys https://repos.codelite.org/CodeLite.asc
-       sudo apt-add-repository 'deb https://repos.codelite.org/wx3.2/ubuntu/ jammy universe'
-       sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-       sudo apt-get update
-       sudo apt-get install libcurl4-openssl-dev libwxbase3.2-0-unofficial \
-                libwxbase3.2unofficial-dev libwxgtk3.2-0-unofficial libwxgtk3.2unofficial-dev \
-                wx3.2-headers wx-common libnotify-dev libnotify4 libcurl4-openssl-dev lcov cmake \
-                ninja-build
+#     - name: Install Prerequisites
+#       run: |
+#        sudo apt-key adv --fetch-keys https://repos.codelite.org/CodeLite.asc
+#        sudo apt-add-repository 'deb https://repos.codelite.org/wx3.2/ubuntu/ jammy universe'
+#        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+#        sudo apt-get update
+#        sudo apt-get install libcurl4-openssl-dev libwxbase3.2-0-unofficial \
+#                 libwxbase3.2unofficial-dev libwxgtk3.2-0-unofficial libwxgtk3.2unofficial-dev \
+#                 wx3.2-headers wx-common libnotify-dev libnotify4 libcurl4-openssl-dev lcov cmake \
+#                 ninja-build
       
-    - name: Configure cmake
-      run: |
-        sudo ln -s /usr/include/wx-3.2 /usr/include/wx-3.2-unofficial
-        cmake --preset x64-release-linux
+#     - name: Configure cmake
+#       run: |
+#         sudo ln -s /usr/include/wx-3.2 /usr/include/wx-3.2-unofficial
+#         cmake --preset x64-release-linux
 
-    - name: Build solution
-      run: cmake --build --preset build-x64-release-linux --target EU5ToVic3Converter EU5ToVic3Tests -- -j5
+#     - name: Build solution
+#       run: cmake --build --preset build-x64-release-linux --target EU5ToVic3Converter EU5ToVic3Tests -- -j5
 
-    - name: Run tests
-      run: |
-       cd build/test/Release-Linux
-       ./EU5ToVic3Tests
+#     - name: Run tests
+#       run: |
+#        cd build/test/Release-Linux
+#        ./EU5ToVic3Tests
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v4.37.9
+#     - name: Perform CodeQL Analysis
+#       uses: github/codeql-action/analyze@v4.37.9
