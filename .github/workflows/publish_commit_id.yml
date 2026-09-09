@@ -1,28 +1,28 @@
-name: "Publish commit id"
+# name: "Publish commit id"
 
-on:
-  push:
-    branches: [master]
+# on:
+#   push:
+#     branches: [master]
 
-jobs:
-  publish_id:
-    if: github.repository_owner == 'ParadoxGameConverters'
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v7
+# jobs:
+#   publish_id:
+#     if: github.repository_owner == 'ParadoxGameConverters'
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: Checkout
+#       uses: actions/checkout@v7
 
-    - name: Publish commit id
-      uses: ParadoxGameConverters/publish_commit_id@main
-      env:
-        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
-      with:
-        destination_file: 'EU5ToVic3.txt'
-        user_email: 'idhrendur@hotmail.com'
-        user_name: 'idhrendur'
-        destination_branch: 'main'
-        commit_message: "Publish EU5ToVic3's commit id"
+#     - name: Publish commit id
+#       uses: ParadoxGameConverters/publish_commit_id@main
+#       env:
+#         API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+#       with:
+#         destination_file: 'EU5ToVic3.txt'
+#         user_email: 'idhrendur@hotmail.com'
+#         user_name: 'idhrendur'
+#         destination_branch: 'main'
+#         commit_message: "Publish EU5ToVic3's commit id"
 
-    - name: Cleanup
-      uses: colpal/actions-clean@v1
-      if: always()
+#     - name: Cleanup
+#       uses: colpal/actions-clean@v1
+#       if: always()
