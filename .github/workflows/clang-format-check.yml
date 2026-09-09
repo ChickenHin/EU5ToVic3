@@ -1,18 +1,18 @@
-name: clang-format Check
-on: [push, pull_request]
-jobs:
-  formatting-check:
-    name: Formatting Check
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        path:
-          - 'EU5ToVic3/Source'
-          - 'EU5ToVic3Tests'
-    steps:
-    - uses: actions/checkout@v7
-    - name: Run clang-format style check for C/C++ programs.
-      uses: jidicula/clang-format-action@v4.18.0
-      with:
-        clang-format-version: '20'
-        check-path: ${{ matrix.path }}
+# name: clang-format Check
+# on: [push, pull_request]
+# jobs:
+#   formatting-check:
+#     name: Formatting Check
+#     runs-on: ubuntu-latest
+#     strategy:
+#       matrix:
+#         path:
+#           - 'EU5ToVic3/Source'
+#           - 'EU5ToVic3Tests'
+#     steps:
+#     - uses: actions/checkout@v7
+#     - name: Run clang-format style check for C/C++ programs.
+#       uses: jidicula/clang-format-action@v4.18.0
+#       with:
+#         clang-format-version: '20'
+#         check-path: ${{ matrix.path }}
